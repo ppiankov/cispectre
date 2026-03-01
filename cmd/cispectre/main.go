@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/ppiankov/cispectre/internal/commands"
 )
 
 var (
@@ -12,10 +14,12 @@ var (
 )
 
 func main() {
-	if len(os.Args) > 1 && os.Args[1] == "version" {
-		fmt.Printf("cispectre %s (commit: %s, built: %s)\n", version, commit, date)
-		return
+	commands.Version = version
+	commands.Commit = commit
+	commands.Date = date
+
+	if err := commands.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
-	fmt.Println("cispectre — GitHub Actions waste auditor")
-	os.Exit(0)
 }
