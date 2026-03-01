@@ -72,13 +72,28 @@ func TestScanRejectsRepoAndOrg(t *testing.T) {
 	}
 }
 
-func TestScanWithRepo(t *testing.T) {
-	out, err := executeCommand("scan", "--repo", "owner/repo")
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+func TestScanRequiresToken(t *testing.T) {
+	// Ensure GITHUB_TOKEN is not set for this test
+	orig := os.Getenv("GITHUB_TOKEN")
+	t.Setenv("GITHUB_TOKEN", "")
+	t.Cleanup(func() { t.Setenv("GITHUB_TOKEN", orig) })
+
+	_, err := executeCommand("scan", "--repo", "owner/repo")
+	if err == nil {
+		t.Fatal("expected error when no token is set")
 	}
-	if !strings.Contains(out, "not yet implemented") {
-		t.Errorf("expected placeholder message, got: %s", out)
+	if !strings.Contains(err.Error(), "token required") {
+		t.Errorf("unexpected error message: %v", err)
+	}
+}
+
+func TestScanRejectsInvalidRepoFormat(t *testing.T) {
+	_, err := executeCommand("scan", "--repo", "noslash", "--token", "fake")
+	if err == nil {
+		t.Fatal("expected error for invalid repo format")
+	}
+	if !strings.Contains(err.Error(), "expected owner/repo") {
+		t.Errorf("unexpected error message: %v", err)
 	}
 }
 
