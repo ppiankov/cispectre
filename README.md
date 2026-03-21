@@ -1,6 +1,7 @@
 # cispectre
 
 [![CI](https://github.com/ppiankov/cispectre/actions/workflows/ci.yml/badge.svg)](https://github.com/ppiankov/cispectre/actions/workflows/ci.yml)
+[![ANCC](https://img.shields.io/badge/ANCC-compliant-brightgreen)](https://ancc.dev)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ppiankov/cispectre)](https://goreportcard.com/report/github.com/ppiankov/cispectre)
 
 **cispectre** — GitHub Actions waste and hygiene auditor. Part of [SpectreHub](https://github.com/ppiankov/spectrehub).
